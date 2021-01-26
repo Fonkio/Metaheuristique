@@ -12,17 +12,17 @@ public class Utils {
 
         List <Integer> nBits = new ArrayList<>();
 
-        Random rd = new Random();
+        /*Random rd = new Random();
         for (int i = 0; i < n; i++) {
             nBits.add(rd.nextInt(2));
-        }
+        }*/
 
-        /*nBits.add(1);//Test
-        nBits.add(1);
+        nBits.add(0);//Test
         nBits.add(0);
         nBits.add(1);
+        nBits.add(1);
         nBits.add(0);
-        nBits.add(0);*/
+        nBits.add(0);
 
         return nBits;
     }

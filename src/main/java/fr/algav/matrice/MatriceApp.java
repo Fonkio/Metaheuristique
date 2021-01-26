@@ -1,6 +1,8 @@
 package fr.algav.matrice;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Hello world!
@@ -8,15 +10,16 @@ import java.io.FileNotFoundException;
  */
 public class MatriceApp
 {
-    public static void main( String[] args )  {
+    public static void main( String[] args ) throws FileNotFoundException {
 
-        steepestHillClimbingLoop("./partition6.txt", 1000, 100, false);
+
+        steepestHillClimbingLoop("./s23.txt", 10, 1,true);
         //steepestHillClimbingLoop("./graphe12345.txt", 1000, 100, false);
 
-        tabou("./partition6.txt", 1000, 1000);
+        //tabou("./s23.txt", 100, 10);
         //tabou("./graphe12345.txt", 1000, 1000);
 
-        steepestHillClimbingLoop("./partition6.txt", 10000, 10000, true);
+        //steepestHillClimbingLoop("./partition6.txt", 10000, 10000, true);
         //steepestHillClimbingLoop("./graphe12345.txt", 1000, 100, true);
 
     }

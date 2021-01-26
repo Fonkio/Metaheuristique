@@ -8,7 +8,7 @@ import java.util.*;
 
 public class TSPFile {
 
-    private Set<Ville> villesInit = new HashSet<>();
+    public List<Ville> villesInit = new ArrayList<>();
     private int nbVilles;
 
     public TSPFile(String path) throws FileNotFoundException {
@@ -29,10 +29,11 @@ public class TSPFile {
             randomVilles.add(villes.get(rdmInt));
             villes.remove(rdmInt);
         }
+
         return randomVilles;
     }
 
-    private double distance(List<Ville> villes) { //Question 2
+    public double distance(List<Ville> villes) { //Question 2
         double distance = Math.sqrt((0 - villes.get(0).getX()) * (0 - villes.get(0).getX()) + (0 - villes.get(0).getY()) * (0 - villes.get(0).getY()));
         for (int i = 0; i < nbVilles; i++) {
             double x1 = villes.get(i).getX();
@@ -51,9 +52,42 @@ public class TSPFile {
         return distance;
     }
 
-    private List<Ville> meilleurVoisin(List<Ville> villes) { //Question 3
+    public List<Ville> meilleurVoisin(List<Ville> villes) { //Question 3
         Map<List<Ville>, Double>listeVoisin = getVoisin(villes);
         return meilleureSolution(listeVoisin);
+    }
+
+    public double distV(Ville v1, Ville v2) {
+        return Math.sqrt((v1.getX() - v2.getX()) * (v1.getX() - v2.getX()) + (v1.getY() - v2.getY()) * (v1.getY() - v2.getY()));
+    }
+
+    public List<Ville> meilleurVoisin2Opt(List<Ville> villes) { //Question 3
+        Map<List<Ville>, Double>listeVoisin = towOpt(villes);
+        return meilleureSolution(listeVoisin);
+    }
+
+    public Map<List<Ville>, Double> towOpt(List<Ville> villes) { //Exam
+        Map<List<Ville>, Double> voisins = new HashMap<>();
+        for (int i = 0; i < nbVilles-1; i++) {
+            for (int j = i+1; j < nbVilles-1; j++) {
+                if (distV(villes.get(i), villes.get(i+1)) + distV(villes.get(j), villes.get(j+1)) > distV(villes.get(i), villes.get(j))) {
+                    List<Ville> bestVoisin = new ArrayList<>();
+                    for (int k = 0; k < i; k++) {
+                        bestVoisin.add(villes.get(k));
+                    }
+                    bestVoisin.add(villes.get(j));
+                    for (int k = j-1; k > i; k--) {
+                        bestVoisin.add(villes.get(k));
+                    }
+                    bestVoisin.add(villes.get(i));
+                    for (int k = j+1; k < nbVilles; k++) {
+                        bestVoisin.add(villes.get(k));
+                    }
+                    voisins.put(bestVoisin, distance(bestVoisin));
+                }
+            }
+        }
+        return voisins;
     }
 
     private List<Ville> meilleureSolution(Map<List<Ville>, Double> listeVoisin) {
@@ -101,11 +135,12 @@ public class TSPFile {
         double bestDist = distance(bestRes);
         System.out.println("Solution initiale :");
         System.out.println(bestRes + " avec dist = "+ bestDist);
-
+        int somme = 0;
         for (int i = 0; i < max_essais; i++) {
             System.out.println("========Essais n°"+i+"/"+max_essais+"("+(((double)i)/((double)max_essais))*100L+"%)===============");
             List<Ville> res = steepestHillClimbing(max_depl);
             double dist = distance(res);
+            somme += dist;
             if (dist < bestDist) {
                 bestRes = res;
                 bestDist = dist;
@@ -113,7 +148,8 @@ public class TSPFile {
                 System.out.println(bestRes + " \navec dist = "+ bestDist);
             }
         }
-        System.out.println("Meilleure solution trouvée :");
+
+        System.out.println("Meilleure solution trouvée (moy = "+ (somme/100) +":");
         System.out.println(bestRes + "\n avec dist = "+ bestDist);
         return bestDist;
     }

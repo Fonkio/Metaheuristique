@@ -30,6 +30,7 @@ public class MatriceFile {
         List<Integer> s = Utils.randomN(getN());
         Queue<List<Integer>> tabou = new LinkedList<>();
         int nb_depl = 0;
+        System.out.println("X"+(nb_depl)+" : S = "+s+" f="+f(s));
         List<Integer> mSol = s;
         boolean stop = false;
         List<Integer> sPrime = null;
@@ -46,10 +47,13 @@ public class MatriceFile {
             if (f(sPrime) < f(mSol)) {
                 mSol = sPrime;
             }
+            s = sPrime;
+            System.out.println("X"+(nb_depl+1)+" : S = "+s+" f="+f(s));
             nb_depl ++;
         } while (nb_depl != max_depl && !stop);
         System.out.println("Solution trouvée avec tabou :");
         System.out.println(mSol + " avec f = " + f(mSol));
+        System.out.println(tabou);
         return mSol;
     }
 
@@ -83,11 +87,14 @@ public class MatriceFile {
     public List<Integer> steepestHillClimbing(int max_depl, boolean contrainte) throws FileNotFoundException { //Calcul Steepest Hill-Climbing QUESTION 4
         List<Integer> s = Utils.randomN(getN());
         int nb_depl = 0;
+        System.out.println("X"+(nb_depl)+" : S = "+s+" f="+f(s));
         boolean stop = false;
         do {
+
             List<Integer> sPrime = meilleur_voisin(s, contrainte);
             if (sPrime != null && f(sPrime)<f(s)) {
                 s = sPrime;
+                System.out.println("X"+(nb_depl+1)+" : S = "+s+" f="+f(s));
             } else {
                 stop = true;
             }
